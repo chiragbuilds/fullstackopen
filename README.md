@@ -11,7 +11,7 @@ This repository contains my submissions for the [Full Stack Open](https://fullst
 | Part | Topic | Status |
 |------|------|--------|
 | Part 0 | Fundamentals of Web Apps | ☑️ |
-| Part 1 | Introduction to React | ⬜ |
+| Part 1 | Introduction to React | ☑️ |
 | Part 2 | Communicating with Server | ⬜ |
 | Part 3 | Programming a Server with Node.js and Express | ⬜ |
 | Part 4 | Testing Express Servers, User Administration | ⬜ |
