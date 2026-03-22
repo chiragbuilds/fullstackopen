@@ -26,9 +26,14 @@
       "number": "911911911911"
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Zoro",
       "number": "0000000000"
+    },
+    {
+      "id": 7,
+      "name": "Nami",
+      "number": "239123812"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
