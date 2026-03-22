@@ -31,11 +31,29 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    persons.find((person) => person.name === newName)
-      ? alert(`${newName} is already added to phonebook `)
-      : (setPersons(persons.concat({ name: newName, number: newNumber, id: persons.length + 1 })),
-        setNewName(""),
-        setNewNumber(""));
+    const newContact = {
+      name: newName,
+      number: newNumber,
+      id: persons.length + 1
+    }
+
+    const isDuplicated = persons.find((person) => person.name.toLowerCase() === newName.toLowerCase())
+
+    if (isDuplicated) {
+      alert(`${newName} is already added to phonebook `)
+    }
+    else{
+       axios
+            .post('http://localhost:3001/persons', newContact)
+            .then((response) => {
+              setPersons(persons.concat(response.data))
+              setNewName("")
+              setNewNumber("")
+            })
+    }
+
+    
+        
   };
 
   return (
