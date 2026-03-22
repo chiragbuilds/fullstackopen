@@ -32,8 +32,7 @@ const App = () => {
 
     const newContact = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1
+      number: newNumber
     }
 
     const isDuplicated = persons.find((person) => person.name.toLowerCase() === newName.toLowerCase())
@@ -50,10 +49,24 @@ const App = () => {
                 setNewNumber('')
               })
     }
-
-    
-        
   };
+
+  const handleDelete = (id, name) => {
+    const url = `http://localhost:3001/persons/${id}`
+    const confirm = window.confirm(`Delete ${name}?`)
+    if(confirm){
+      phonebook
+              .remove(url)
+              .then(res => {
+                setPersons(persons.filter( person => person.id !== res.id))
+                alert(`${name} deleted successfully`)
+              })
+              .catch(()=>{
+                alert(`${name} was already removed from the server` )
+              })
+      
+    }
+  }
 
   return (
     <div>
@@ -71,7 +84,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons resultList={resultList}/>
+      <Persons resultList={resultList} handleDelete={handleDelete}/>
     </div>
   );
 };
