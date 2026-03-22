@@ -26,9 +26,9 @@
       "number": "9879879878"
     },
     {
-      "id": "5c1d",
-      "name": "Zoro",
-      "number": "2364528756"
+      "name": "zoro",
+      "number": "2222222222",
+      "id": "5c1d"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

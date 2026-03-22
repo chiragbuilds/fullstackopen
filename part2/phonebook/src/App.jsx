@@ -38,7 +38,18 @@ const App = () => {
     const isDuplicated = persons.find((person) => person.name.toLowerCase() === newName.toLowerCase())
 
     if (isDuplicated) {
-      alert(`${newName} is already added to phonebook `)
+      const update = window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`)
+      if (update) {
+        const oldContact = persons.find(p => p.name.toLowerCase() === newName.toLowerCase())
+        const url = `http://localhost:3001/persons/${oldContact.id}` 
+        phonebook
+                .update(url, newContact)
+                .then(res => {
+                    alert(`updated!`),
+                    setPersons(persons.map(person => person.id === oldContact.id ? res : person))
+                  }
+                )
+      }
     }
     else{
       phonebook
@@ -64,7 +75,6 @@ const App = () => {
               .catch(()=>{
                 alert(`${name} was already removed from the server` )
               })
-      
     }
   }
 

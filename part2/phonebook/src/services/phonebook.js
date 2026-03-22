@@ -17,8 +17,14 @@ const remove = url => {
     return request.then(response => response.data)
 }
 
+const update = (url, updatedContact) => {
+    const request = axios.put(url, updatedContact)
+    return request.then(response => response.data)
+}
+
 export default { 
   getAll, 
   create,
-  remove
+  remove,
+  update
 }
