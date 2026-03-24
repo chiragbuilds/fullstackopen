@@ -18,10 +18,12 @@ function App() {
                           ? countries.filter(res => res.name.common.toLowerCase().includes(search.toLowerCase()))
                           : []
 
+  const showCountry = country => setSearch(country)
+  
   return (
     <>
       Find countries <input value={search} onChange={(e)=>setSearch(e.target.value)}/>
-      <Countrylist countries={countriesToShow}/>
+      <Countrylist countries={countriesToShow} showCountry={showCountry}/>
     </>
   )
 }
