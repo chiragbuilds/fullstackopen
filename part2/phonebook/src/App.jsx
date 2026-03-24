@@ -3,9 +3,12 @@ import { Persons } from './components/Persons'
 import { Filter } from './components/Filter'
 import { PersonForm } from './components/PersonForm'
 import phonebook from "./services/phonebook";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  const [notification, setNotification] = useState(null)
+  const [msgType, setMsgType] = useState(null)
 
   useEffect(() => {
     phonebook
@@ -47,8 +50,14 @@ const App = () => {
                 .then(res => {
                     alert(`updated!`),
                     setPersons(persons.map(person => person.id === oldContact.id ? res : person))
+                    showNotification('updated successfully', 'success')
                   }
                 )
+                .catch(error => {
+                  showNotification('Error occured while updating', 'error')
+                  console.log("Error occured while updating: ", error);
+                  
+                })
       }
     }
     else{
@@ -58,6 +67,11 @@ const App = () => {
                 setPersons(persons.concat(res))
                 setNewName('')
                 setNewNumber('')
+                showNotification(`${res.name} added successfully!`, 'success')
+              })
+              .catch(error => {
+                showNotification('Error occured!','error')
+                console.log("Error occured while creating: ", error);
               })
     }
   };
@@ -70,17 +84,29 @@ const App = () => {
               .remove(url)
               .then(res => {
                 setPersons(persons.filter( person => person.id !== res.id))
-                alert(`${name} deleted successfully`)
+                showNotification('Deleted successfully!','success')
               })
               .catch(()=>{
-                alert(`${name} was already removed from the server` )
+                showNotification(`${name} was already removed from the server`,'error')
               })
     }
   }
 
+  const showNotification = (message,type) => {
+    setNotification(message)
+    setMsgType(type)
+
+    setTimeout(() => {
+      setNotification(null)
+      setMsgType(null)
+    }, 5000);
+  }
+
   return (
     <div>
-      
+      {
+        notification !== null && <Notification message={notification} msgType={msgType}/>
+      }
       <h2>Phonebook</h2>
       <Filter value={searchPeople} onChange={handleSearchPeople}/>
 
