@@ -27,6 +27,11 @@ let persons = [
       "id": "4",
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
+    },
+    { 
+      "id": "5",
+      "name": "Luffy", 
+      "number": "9829829828"
     }
 ]
 
@@ -60,8 +65,13 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const body = req.body
   if(!body.name || !body.number){
-    return res.status(400).json({ error: "content missing"})
+    return res.status(400).json({ error: "information missing"})
   }
+
+  if(persons.find(person => person.name.toLowerCase() === body.name.toLowerCase())){
+    return res.status(400).json({error: "name must be unique"})
+  }
+
   const newPerson = {
     id: generateID(),
     name: body.name,
