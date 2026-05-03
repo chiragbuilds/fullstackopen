@@ -46,9 +46,9 @@ let persons = [
 
 
 
-app.get('/', (req, res)=>{
-    res.send("HELL YEAH")
-})
+// app.get('/', (req, res)=>{
+//     res.send("HELL YEAH")
+// })
 
 app.get('/api/persons', (req, res)=>{
     res.status(200).json(persons)
