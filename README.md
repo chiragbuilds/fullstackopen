@@ -24,6 +24,6 @@ This repository contains my submissions for the [Full Stack Open](https://fullst
 | Part 11 | CI/CD | ⬜ |
 | Part 12 | Containers | ⬜ |
 | Part 13 | Using Relational Databases | ⬜ |
-
+| Part 14 | Next.JS | ⬜ |
 ---
 
