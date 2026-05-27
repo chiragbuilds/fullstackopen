@@ -9,6 +9,9 @@ app.use(express.json())
 
 app.use(express.static('dist'))
 
+
+const Contact = require('./models/phonebook')
+
 morgan.token('body', (request, response) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
@@ -51,7 +54,8 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/api/persons', (req, res)=>{
-    res.status(200).json(persons)
+  Contact.find().then(response => res.status(200).json(response))
+    // res.status(200).json(persons)
 })
 
 app.get('/info', (req, res) => {
@@ -61,8 +65,12 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
   const id = req.params.id
-  const person = persons.filter(person => person.id === id)
-  person.length > 0 ? res.json(person) : res.status(400).end()
+  // const person = persons.filter(person => person.id === id)
+  // person.length > 0 ? res.json(person) : res.status(400).end()
+
+  Contact.findById(id)
+    .then(response => res.json(response))
+    .catch(error => res.status(400).json({error : "Invalid ID"}))
 
 })
 
