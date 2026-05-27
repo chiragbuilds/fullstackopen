@@ -88,19 +88,25 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: "information missing"})
   }
 
-  if(persons.find(person => person.name.toLowerCase() === body.name.toLowerCase())){
-    return res.status(400).json({error: "name must be unique"})
-  }
+  // if(persons.find(person => person.name.toLowerCase() === body.name.toLowerCase())){
+  //   return res.status(400).json({error: "name must be unique"})
+  // }
 
-  const newPerson = {
-    id: generateID(),
+  // const newPerson = {
+  //   id: generateID(),
+  //   name: body.name,
+  //   number: body.number
+  // }
+  // console.log(newPerson);
+  // persons = persons.concat(newPerson)
+  
+  // res.json(newPerson)
+
+  const contact = new Contact({
     name: body.name,
     number: body.number
-  }
-  console.log(newPerson);
-  persons = persons.concat(newPerson)
-  
-  res.json(newPerson)
+  })
+  contact.save().then(response => res.json(response))
 })
 
 const PORT = process.env.PORT || 3001
