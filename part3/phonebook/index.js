@@ -57,8 +57,15 @@ app.get('/api/persons', (req, res)=>{
 })
 
 app.get('/info', (req, res) => {
-    const requestedTime = new Date()
-    res.send( `<p>Phonebook has info for ${persons.length} people</p><p>${requestedTime}</p>`)
+  Contact.countDocuments({})
+  .then(count => {
+    res.send(
+      `<p>Phonebook has info for ${count} people</p>
+      <p>${new Date()}</p>`
+    )
+  })
+    // const requestedTime = new Date()
+    // res.send( `<p>Phonebook has info for ${persons.length} people</p><p>${requestedTime}</p>`)
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
