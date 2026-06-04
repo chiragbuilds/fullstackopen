@@ -61,26 +61,36 @@ app.get('/info', (req, res) => {
     res.send( `<p>Phonebook has info for ${persons.length} people</p><p>${requestedTime}</p>`)
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
   // const person = persons.filter(person => person.id === id)
   // person.length > 0 ? res.json(person) : res.status(400).end()
 
   Contact.findById(id)
-    .then(response => res.json(response))
-    .catch(error => res.status(400).json({error : "Invalid ID"}))
-
+    .then(response => {
+      if(!response){
+        return res.status(404).json({error: 'content not found'})
+      }
+      res.json(response)
+    })
+    .catch(error => {
+      // res.status(400).json({error : "Invalid ID"})
+      next(error)
+    })
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
   const id = req.params.id
   const person = {}
   Contact.findByIdAndDelete(id)
     .then(result => {
+      if(!result){
+        return res.status(404).json({error : 'content might have already deleted'})
+      }
       console.log('Deleted contact : ', result)
       res.json(result)
     })
-    .catch(error => res.status(404).end())
+    .catch(error => next(error))
   
   // const person = persons.find(person => person.id === id)
   // persons = persons.filter(person => person.id !== id)
@@ -88,7 +98,7 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
   if(!body.name || !body.number){
     return res.status(400).json({ error: "information missing"})
@@ -112,8 +122,23 @@ app.post('/api/persons', (req, res) => {
     name: body.name,
     number: body.number
   })
-  contact.save().then(response => res.json(response))
+  contact
+    .save()
+    .then(response => res.json(response))
+    .catch(error => next(error))
 })
+
+// Error handle middleware -
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+   if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 
