@@ -128,6 +128,21 @@ app.post('/api/persons', (req, res, next) => {
     .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (req, res, next) => {
+  if(!req.body){
+    return res.status(400).json({error: 'content missing'})
+  }
+  Contact.findById(req.params.id)
+    .then(result => {
+      result.name = req.body.name
+      result.number = req.body.number
+
+      return result.save()
+    })
+    .then(updatedResult => res.json(updatedResult))
+    .catch(error => console.log(error))
+})
+
 // Error handle middleware -
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
