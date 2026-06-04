@@ -47,8 +47,6 @@ let persons = [
     }
 ]
 
-
-
 app.get('/', (req, res)=>{
     res.send("HELL YEAH")
 })
@@ -76,9 +74,17 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.delete('/api/persons/:id', (req, res) => {
   const id = req.params.id
-  const person = persons.find(person => person.id === id)
-  persons = persons.filter(person => person.id !== id)
-  res.json(person).status(200)
+  const person = {}
+  Contact.findByIdAndDelete(id)
+    .then(result => {
+      console.log('Deleted contact : ', result)
+      res.json(result)
+    })
+    .catch(error => res.status(404).end())
+  
+  // const person = persons.find(person => person.id === id)
+  // persons = persons.filter(person => person.id !== id)
+  // res.json(person).status(200)
 })
 
 
