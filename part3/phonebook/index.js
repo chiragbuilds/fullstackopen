@@ -136,7 +136,7 @@ app.post('/api/persons', (req, res, next) => {
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
-  if(!req.body){
+  if(!req.body.content){
     return res.status(400).json({error: 'content missing'})
   }
   Contact.findById(req.params.id)
