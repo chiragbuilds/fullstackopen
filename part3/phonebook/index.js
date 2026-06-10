@@ -13,9 +13,11 @@ app.use(express.static('dist'))
 
 const Contact = require('./models/phonebook')
 
+// eslint-disable-next-line no-unused-vars
 morgan.token('body', (request, response) => JSON.stringify(request.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
+// eslint-disable-next-line no-unused-vars
 const generateID = () => {
   return (Math.floor(Math.random() * 100000)).toString()
 }
@@ -136,6 +138,7 @@ app.post('/api/persons', (req, res, next) => {
     .catch(error => next(error))
 })
 
+// eslint-disable-next-line no-unused-vars
 app.put('/api/persons/:id', (req, res, next) => {
   if(!req.body.content){
     return res.status(400).json({ error: 'content missing' })
@@ -165,6 +168,7 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 
+// eslint-disable-next-line no-unused-vars
 app.listen(PORT, (req, res) => {
   console.log(`App running on port ${PORT}`)
   console.log(`URL: http://localhost:${PORT}`)
