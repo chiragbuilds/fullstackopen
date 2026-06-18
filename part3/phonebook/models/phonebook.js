@@ -9,7 +9,7 @@ const URI = process.env.MONGODB_URI
 
 mongoose.connect(URI, { family:4 })
   .then(() => console.log('Connected to ', URI))
-  .catch(error => console.log('Error occured while connecting! ',error))
+  .catch(error => console.log('Error occurred while connecting! ',error))
 
 const ContactSchema = new mongoose.Schema({
   name : {
