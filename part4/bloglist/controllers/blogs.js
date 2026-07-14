@@ -15,17 +15,22 @@ blogsRouter.get("/", async(req, res)=>{
     //   .catch(error => console.error(error))
 })
 
-blogsRouter.post("/", (req, res)=>{
+blogsRouter.post("/", async(req, res)=>{
     const blog = new Blog({
         title: req.body.title,
         author: req.body.author,
         url: req.body.url,
         likes: req.body.likes
     })
-
-    blog.save()
-        .then(response => res.status(200).json(response))
-        .catch(error => console.error(error))
+    try{
+        const response = await blog.save()
+        res.status(201).json(response)
+    } catch(error){
+        console.error(error)
+    }
+    // blog.save()
+    //     .then(response => res.status(201).json(response))
+    //     .catch(error => console.error(error))
 })
 
 module.exports = blogsRouter

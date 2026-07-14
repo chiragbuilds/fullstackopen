@@ -39,6 +39,30 @@ describe('reading the blogs',() => {
     })
 })
 
+describe('creating blog', () => {
+    test('creates a new blog post', async() => {
+        const newBlog = {
+            title: "First class tests",
+            author: "Robert C. Martin",
+            url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+            likes: 10
+        }
+
+        const blogsAtStart = await api.get('/api/blogs')
+        // console.log('START: ', blogsAtStart.body)
+        await api.post('/api/blogs')
+                 .send(newBlog)
+                 .expect(201)
+                 .expect('Content-Type', /application\/json/)
+
+        const blogsAtEnd = await api.get('/api/blogs')
+        // console.log('END:',blogsAtEnd.body)
+        assert.strictEqual(blogsAtEnd.body.length, blogsAtStart.body.length + 1)
+
+        assert(blogsAtEnd.body.find(b => b.title === newBlog.title))
+    })
+})
+
 after(async ()=>{
     await mongoose.connection.close()
 })
