@@ -29,6 +29,14 @@ describe('initially some blogs saved',() => {
         const data = response.body
         assert.strictEqual(data.length,initialBlogs.length)
     })
+    test('return blogs with right unique identifier property', async() => {
+        const response = await api.get('/api/blogs')
+        const data = response.body
+        data.forEach(blog => {
+            assert.ok(blog.id)
+            assert.strictEqual(blog._id, undefined)
+        });
+    })
 })
 
 after(async ()=>{
