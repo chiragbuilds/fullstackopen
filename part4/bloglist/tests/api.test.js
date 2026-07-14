@@ -18,7 +18,7 @@ beforeEach(async ()=>{
     console.log('DB cleanup success!')
 })
 
-describe('initially some blogs saved',() => {
+describe('reading the blogs',() => {
     test('blogs are returned as json', async() => {
         await api.get('/api/blogs')
                  .expect(200)
