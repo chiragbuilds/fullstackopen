@@ -61,6 +61,23 @@ describe('creating blog', () => {
 
         assert(blogsAtEnd.body.find(b => b.title === newBlog.title))
     })
+
+    test.only('likes is 0 by default', async() => {
+        const newBlog = {
+            title: "without likes",
+            author: "Robert C. Martin",
+            url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll"
+        }
+        await api.post('/api/blogs')
+                 .send(newBlog)
+                 .expect(201)
+                 .expect('Content-Type', /application\/json/)
+        
+        const fetchedBlogs = await api.get('/api/blogs')
+        const blog = fetchedBlogs.body.find(b => b.title === newBlog.title)
+        assert.ok(blog)
+        assert.strictEqual(blog.likes, 0)
+    })
 })
 
 after(async ()=>{
