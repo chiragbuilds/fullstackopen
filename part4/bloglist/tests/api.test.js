@@ -62,7 +62,7 @@ describe('creating blog', () => {
         assert(blogsAtEnd.body.find(b => b.title === newBlog.title))
     })
 
-    test.only('likes is 0 by default', async() => {
+    test('likes is 0 by default', async() => {
         const newBlog = {
             title: "without likes",
             author: "Robert C. Martin",
@@ -77,6 +77,25 @@ describe('creating blog', () => {
         const blog = fetchedBlogs.body.find(b => b.title === newBlog.title)
         assert.ok(blog)
         assert.strictEqual(blog.likes, 0)
+    })
+
+    test('without title or url field', async() => {
+        const blogWithoutTitle = {
+            author: 'alibaba',
+            url: 'xyz.com'
+        }
+        const blogWithoutURL = {
+            title: 'no url',
+            author: 'alibaba'
+        }
+        await api.post('/api/blogs')
+                 .send(blogWithoutTitle)
+                 .expect(400)
+                 .expect('Content-Type', /application\/json/)
+        await api.post('/api/blogs')
+                 .send(blogWithoutURL)
+                 .expect(400)
+                 .expect('Content-Type', /application\/json/)
     })
 })
 

@@ -15,7 +15,7 @@ blogsRouter.get("/", async(req, res)=>{
     //   .catch(error => console.error(error))
 })
 
-blogsRouter.post("/", async(req, res)=>{
+blogsRouter.post("/", async(req, res, next)=>{
     const blog = new Blog({
         title: req.body.title,
         author: req.body.author,
@@ -26,7 +26,7 @@ blogsRouter.post("/", async(req, res)=>{
         const response = await blog.save()
         res.status(201).json(response)
     } catch(error){
-        console.error(error)
+        next(error)
     }
     // blog.save()
     //     .then(response => res.status(201).json(response))
