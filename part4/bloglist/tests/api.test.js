@@ -99,6 +99,24 @@ describe('creating blog', () => {
     })
 })
 
+describe('deleting blog', ()=> {
+    test('returns deleted blog with status code 200', async () => {
+        const blogsToDelete = await api.get('/api/blogs')
+        const IdOfblogToDelete = blogsToDelete.body[0].id
+        const deletedBlog = await api.delete(`/api/blogs/${IdOfblogToDelete}`)
+                                     .expect(200)
+                                     .expect('Content-Type', /application\/json/)
+        assert.deepStrictEqual(deletedBlog.body, blogsToDelete.body[0])
+    })
+
+    test('handles invalid id', async()=>{
+        await api.delete('/api/blogs/12')
+                 .expect(404)
+        await api.delete('/api/blogs/507f191e810c19729de860ea')
+                 .expect(404)
+    })
+})
+
 after(async ()=>{
     await mongoose.connection.close()
 })
