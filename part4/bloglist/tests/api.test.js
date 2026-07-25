@@ -117,6 +117,33 @@ describe('deleting blog', ()=> {
     })
 })
 
+describe('updating blog', ()=>{
+    test('returns updated blog with status code 200', async () => {
+        const blogs = await api.get('/api/blogs')
+        const blogToUpdate = blogs.body[0]
+        blogToUpdate.likes = 999
+        const blogAfter = await api.put(`/api/blogs/${blogToUpdate.id}`)
+                                   .send(blogToUpdate)
+                                   .expect(200)
+                                   .expect('Content-Type', /application\/json/)
+
+        assert.deepStrictEqual(blogAfter.body, blogToUpdate)
+    })
+    test('invalid id or missing body throws 400 & 404 status', async () => {
+        const blogs = await api.get('/api/blogs')
+        const blogToUpdate = blogs.body[0]
+
+        await api.put(`/api/blogs/${blogToUpdate.id}`)
+                 .expect(400)
+                 .expect('Content-Type', /application\/json/)
+
+        await api.put(`/api/blogs/randomid`)
+                 .expect(404)
+        await api.put(`/api/blogs/507f191e810c19729de860ea`) //valid mongodb obj id but missing in our db
+                 .expect(400)
+    })
+})
+
 after(async ()=>{
     await mongoose.connection.close()
 })
