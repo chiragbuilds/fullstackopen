@@ -54,6 +54,17 @@ blogsRouter.post("/", async(req, res, next)=>{
 
 
 blogsRouter.delete('/:id', async (req, res, next) => {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+
+    const blog = await Blog.findById(req.params.id)
+
+    if(!blog){
+        return res.status(404).json({ error: 'content not found' })
+    }
+
+    if(!decodedToken.id || !(decodedToken.id===blog.user.toString())){
+        return res.status(401).json({error: 'token invalid'})
+    }
     const id = req.params.id
     try {
         const deletedBlog = await Blog.findByIdAndDelete(id)
@@ -67,16 +78,25 @@ blogsRouter.delete('/:id', async (req, res, next) => {
 })
 
 blogsRouter.put('/:id', async (req, res, next) => {
-    const id = req.params.id
     try {
+        const decodedToken = jwt.verify(req.token, process.env.SECRET)
+        const id = req.params.id
         const blog = await Blog.findById(id)
+
+        if(!blog){
+            return res.status(404).json({ error: 'content not found' })
+        }
+
+        if(!decodedToken.id || !(decodedToken.id===blog.user.toString())){
+            return res.status(401).json({error: 'token invalid'})
+        }
 
         blog.title = req.body.title ?? blog.title
         blog.author = req.body.author ?? blog.author
         blog.url = req.body.url ?? blog.url
         blog.likes = req.body.likes ?? blog.likes
 
-        blog.save()
+        await blog.save()
 
         res.status(200).json(blog)
         
