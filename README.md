@@ -14,7 +14,7 @@ This repository contains my submissions for the [Full Stack Open](https://fullst
 | Part 1 | Introduction to React | ☑️ |
 | Part 2 | Communicating with Server | ☑️ |
 | Part 3 | Programming a Server with Node.js and Express | ☑️ |
-| Part 4 | Testing Express Servers, User Administration | ⬜ |
+| Part 4 | Testing Express Servers, User Administration | ☑️ |
 | Part 5 | Testing React Apps | ⬜ |
 | Part 6 | Advanced State Management | ⬜ |
 | Part 7 | React Router, Custom Hooks, Styling | ⬜ |
@@ -27,3 +27,8 @@ This repository contains my submissions for the [Full Stack Open](https://fullst
 | Part 14 | Next.JS | ⬜ |
 ---
 
+
+
+## Course Certificates
+
+[![Full Stack Open Certificate](./certificates/certificate-fullstack_01.png)](https://studies.cs.helsinki.fi/stats/api/certificate/fullstackopen/en/b6ebb3fbcdd30104db12e1b28d814164)
