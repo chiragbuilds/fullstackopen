@@ -15,12 +15,15 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
-  }, [user])
+  }, [])
 
   const handleSubmit = async(event) => {
     event.preventDefault()
     try {
       const user = await loginService.login( {username, password} )
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      ) 
       setUser(user)
       setUsername('')
       setPassword('')
@@ -33,16 +36,28 @@ const App = () => {
     }
   }
 
+  const handleLogOut = (event) => {
+    event.preventDefault()
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+  }
+
   return (
     <div>
       {errorMessage && <div style={{ color: 'red', border: '2px solid red', padding:'5px', backgroundColor:'lightgray' }}>{errorMessage}</div>}
       <h2>blogs</h2>
       {console.log(user)}
-      {user && <h3>{user.name} logged in</h3>}
+      {user && 
+        <div>
+          <h5>{user.name} logged in<button onClick={handleLogOut}>log out</button></h5>
+          
+        </div>
+      }
       {!user && <Login handleSubmit={handleSubmit} setPassword={setPassword} setUsername={setUsername}/>}
       {user && blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
-      )}
+      )
+      }
     </div>
   )
 }
