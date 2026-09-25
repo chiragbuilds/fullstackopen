@@ -4,13 +4,15 @@ import blogService from './services/blogs'
 import Login from './components/Login'
 import loginService from './services/login'
 import Createblog from './components/Createblog'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [msgType, setMsgType] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -27,6 +29,15 @@ const App = () => {
     }
   },[])
 
+  const notification = (msg, type) => {
+    setMessage(msg)
+    setMsgType(type)
+    setTimeout(()=>{
+      setMessage(null)
+      setMsgType(null)
+    },5000)
+  }
+
   const handleSubmit = async(event) => {
     event.preventDefault()
     try {
@@ -37,12 +48,10 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      notification('logged in successfully', 'success')
     } catch (error) {
       console.log(error);
-      setErrorMessage('wrong credentials')
-      setTimeout(()=>{
-        setErrorMessage(null)
-      },5000)
+      notification('wrong username or password', 'error')
     }
   }
 
@@ -50,6 +59,7 @@ const App = () => {
     event.preventDefault()
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
+    notification('logged out successfully', 'success')
   }
 
   const handleCreateBlog = async(newBlogs) => {
@@ -57,18 +67,16 @@ const App = () => {
     try{
       const newBlog = await blogService.create(newBlogs)
       setBlogs(blogs => blogs.concat(newBlog))
+      notification(`added ${newBlog.title}`, 'success')
     }
     catch(e){
-      setErrorMessage(e.message)
-      setTimeout(()=>{
-        setErrorMessage(null)
-      },5000)
+      notification(`${e.message}`, 'error')
     }
   }
 
   return (
     <div>
-      {errorMessage && <div style={{ color: 'red', border: '2px solid red', padding:'5px', backgroundColor:'lightgray' }}>{errorMessage}</div>}
+      {message && <Notification message={message} msgType={msgType}/>}
       <h2>blogs</h2>
 
       {user && 
