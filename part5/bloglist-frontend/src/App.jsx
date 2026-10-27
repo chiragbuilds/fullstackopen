@@ -107,7 +107,7 @@ const App = () => {
 
       {!user && <Login handleSubmit={handleSubmit} setPassword={setPassword} setUsername={setUsername}/>}
 
-      {user && blogs.map(blog =>
+      {user && [...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} handleLiked={handleLiked}/>
       )
       }
