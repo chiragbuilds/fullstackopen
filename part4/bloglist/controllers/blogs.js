@@ -107,7 +107,7 @@ blogsRouter.put('/:id', userExtractor,async (req, res, next) => {
         blog.likes = req.body.likes ?? blog.likes
 
         await blog.save()
-
+        await blog.populate('user')
         res.status(200).json(blog)
         
     } catch (error) {
