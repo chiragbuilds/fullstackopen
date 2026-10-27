@@ -78,6 +78,16 @@ const App = () => {
     }
   }
 
+  const handleLiked = async(blog) => {
+    blog.likes = blog.likes + 1
+    console.log(blog)
+
+    const updatedBlog = await blogService.updateBlog(blog)
+
+    setBlogs(blogs.map(b => b.id === blog.id ? updatedBlog : b))
+    console.log('Updated Blog : ',updatedBlog);
+  }
+
   return (
     <div>
       {message && <Notification message={message} msgType={msgType}/>}
@@ -91,14 +101,14 @@ const App = () => {
 
       {user && 
         <Togglable buttonLabel={'create a blog'} ref={createBlogFormRef}>
-          <Createblog handleCreateBlog={handleCreateBlog}/>
+          <Createblog handleCreateBlog={handleCreateBlog} />
         </Togglable>
       }
 
       {!user && <Login handleSubmit={handleSubmit} setPassword={setPassword} setUsername={setUsername}/>}
 
       {user && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLiked={handleLiked}/>
       )
       }
 

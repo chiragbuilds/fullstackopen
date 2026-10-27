@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLiked }) => {
 
   const [showInfo, setShowInfo] = useState(false)
 
@@ -16,7 +16,9 @@ const Blog = ({ blog }) => {
     setShowInfo(!showInfo)
   }
 
-  // console.log(blog)
+  const liked = () => {
+    handleLiked(blog)
+  }
   return (
     <div style={stylish}>
       {blog.title} {blog.author}
@@ -24,7 +26,7 @@ const Blog = ({ blog }) => {
       <div style={displayWhenTrue}>
         {blog.url}
         <br />
-        Likes : {blog.likes} <button >like</button>
+        Likes : {blog.likes} <button onClick={liked}>like</button>
         <br />
         {blog.user.name}
       </div>
