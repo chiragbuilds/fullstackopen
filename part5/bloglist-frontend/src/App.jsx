@@ -88,6 +88,15 @@ const App = () => {
     console.log('Updated Blog : ',updatedBlog);
   }
 
+  const handleDeleteBlog = async(blog) => {
+    if(window.confirm(`remove ${blog.title}?`)){
+      const deletedBlog = await blogService.deleteBlog(blog)
+      console.log(deletedBlog);
+      setBlogs(blogs.filter(b => b.id !== deletedBlog.id))
+      notification(`${deletedBlog.title} deleted successfully`, 'success')
+    }
+  }
+
   return (
     <div>
       {message && <Notification message={message} msgType={msgType}/>}
@@ -108,7 +117,7 @@ const App = () => {
       {!user && <Login handleSubmit={handleSubmit} setPassword={setPassword} setUsername={setUsername}/>}
 
       {user && [...blogs].sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} handleLiked={handleLiked}/>
+        <Blog key={blog.id} blog={blog} handleLiked={handleLiked} user={user} handleDeleteBlog={handleDeleteBlog}/>
       )
       }
 
