@@ -9,7 +9,7 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
@@ -20,11 +20,11 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
-  useEffect(()=>{
-    const loggedUser = window.localStorage.getItem("loggedBlogappUser")
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem('loggedBlogappUser')
     if(loggedUser){
       const user = JSON.parse(loggedUser)
       setUser(user)
@@ -35,7 +35,7 @@ const App = () => {
   const notification = (msg, type) => {
     setMessage(msg)
     setMsgType(type)
-    setTimeout(()=>{
+    setTimeout(() => {
       setMessage(null)
       setMsgType(null)
     },5000)
@@ -44,16 +44,16 @@ const App = () => {
   const handleSubmit = async(event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login( {username, password} )
+      const user = await loginService.login( { username, password } )
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       setUser(user)
       setUsername('')
       setPassword('')
       notification('logged in successfully', 'success')
     } catch (error) {
-      console.log(error);
+      console.log(error)
       notification('wrong username or password', 'error')
     }
   }
@@ -85,13 +85,13 @@ const App = () => {
     const updatedBlog = await blogService.updateBlog(blog)
 
     setBlogs(blogs.map(b => b.id === blog.id ? updatedBlog : b))
-    console.log('Updated Blog : ',updatedBlog);
+    console.log('Updated Blog : ',updatedBlog)
   }
 
   const handleDeleteBlog = async(blog) => {
     if(window.confirm(`remove ${blog.title}?`)){
       const deletedBlog = await blogService.deleteBlog(blog)
-      console.log(deletedBlog);
+      console.log(deletedBlog)
       setBlogs(blogs.filter(b => b.id !== deletedBlog.id))
       notification(`${deletedBlog.title} deleted successfully`, 'success')
     }
@@ -102,13 +102,13 @@ const App = () => {
       {message && <Notification message={message} msgType={msgType}/>}
       <h2>blogs</h2>
 
-      {user && 
+      {user &&
         <div>
-          <h5>{user.name} logged in<button onClick={handleLogOut}>log out</button></h5> 
+          <h5>{user.name} logged in<button onClick={handleLogOut}>log out</button></h5>
         </div>
       }
 
-      {user && 
+      {user &&
         <Togglable buttonLabel={'create a blog'} ref={createBlogFormRef}>
           <Createblog handleCreateBlog={handleCreateBlog} />
         </Togglable>
@@ -121,7 +121,7 @@ const App = () => {
       )
       }
 
-      
+
     </div>
   )
 }
